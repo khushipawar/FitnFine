@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title>fit and fine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="csshake.min.css">
+    <!-- or from surge.sh -->
+    <link rel="stylesheet" type="text/css" href="https://csshake.surge.sh/csshake.min.css">
+   <style>
+        body{
+            overflow-x: hidden;
+        }
+       .navbar{
+           
+           background-color: black;
+           text-align: center;
+           width: auto;
+           line-height: 1.5;
+              }
+       .navbar a{
+           margin: auto;
+           color:white;
+           padding :25px;
+           font-size: 25px;
+           text-decoration: none;
+                 }
+        .navbar a:hover{
+            background-color: gray;
+                       }
+        .heading {
+            text-align: center;
+             font-family: 'Chelsea Market', cursive;
+             font-size: 80px;
+        }
+        .home img{
+            position: relative;
+            margin: auto;
+            display: block;
+            padding-top: 10px;
+            width: 100%;
+            
+            
+        }
+        .centered{
+            font-size: 4vw;
+            position: absolute;
+            bottom: 50%;
+            top:50%;
+            left:20%;
+            right:50%;
+            padding-top: 0px;
+            color: whitesmoke;
+            text-transform: capitalize;
+            text-align: center;   
+             
+        }
+        .gallery{
+            display: flex;
+            width:100%;
+             justify-content: center;
+        }
+        .gallery img{
+           align-items: center;
+            flex-flow: nowrap;
+            object-fit: cover;
+        }
+        #contacts{
+            text-align: left;
+             display: inline;
+             
+        }
+       
+        #contacts a:hover{
+                color:blue;
+                
+        }
+       .form{
+           text-align: right;
+           padding:5px;
+       }
+     .icons{
+         text-align: center;
+       font-size: 25px;
+       font-family: 'Times New Roman', Times, serif;
+       padding: 10px;
+     }   
+     #feedback{
+         background-color: black;
+         color:white;
+         text-align: center;
+     }
+    </style>
+</head>
+<body>
+ <div class="navbar" id="menu "  >
+        <a href=#home>Home </a>
+        <a href=#about>About </a>
+        <a href=#contacts> Contact Us</a>
+        <a href=#feedback>Feedback </a>
+   </div> 
+      <div class="home" id="home">
+         
+          <img src="fnvf.jpg" alt="gym1"> 
+              <div class="centered">
+                  
+                    the best project you will ever work on is     <br>     
+                    you
+                  
+                 
+               </div>
+            </div>
+            <div id="about" >
+      <h1 class="heading"> FIT AND FINE</h1>
+      
+    <div class= gallery id="about">
+        <div class="item-1">
+            <img src="ejefw.jpg" alt="image1" width="500px" height=500px">
+        </div>
+        <div class="item-2">
+            <img src="ghjj.jpg" alt="image2"width="500px" height=500px">
+        </div>
+        <div class="item-3">
+         <img src="hg.jpg" alt="image3"width="500px" height=500px">
+        </div>
+      
+    </div>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur doloribus aspernatur ut et distinctio exercitationem, ipsa at eius possimus inventore odio perspiciatis Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut atque quos laborum suscipit fugit alias temporibus iste illum commodi corporis quia voluptatum, optio, magni aliquid, sequi voluptatem perferendis amet in.</p>
+    </div>
+    <div id="contacts" >
+
+         <h1 style="text-align: center;">CONTACT US</h2>
+         <div class="icons">
+            <i class="fa fa-phone">Phone:<a>+918602138503</a></i><br>
+            <i class="fa  fa-instagram"><a href="https://www.instagram.com/60seconds.61moods/"target=_blank> Fit and Fine</a></i><br>
+            <i class="fa fa-facebook"><a href="https:?/www.facebook.com/khushipawar173@yahoo.in/"target=_blank> Fit and Fine</a></i><br>
+            
+     </div>
+     <div id="feedback">
+         <h1 style="text-align: center;">FEEDBACK</h1>
+         <span style="text-align: center;" class="shake-slow"><i>Reviews</i></span><br>
+         <input type="text" >
+     
+         <button onclick=myFunction()>submit</button>
+         <p id="demo"></p>
+         <script>
+             function myFunction(){
+                 window.alert("Thankyou for giving your feedback");
+             }
+             
+         </script>
+     </div>
+</body>
+</html>
