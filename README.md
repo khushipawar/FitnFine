@@ -1,116 +1,127 @@
 import React from "react";
-import { Form, Input, Icon, Select, Col, Row } from "antd";
+import { Icon, Result } from "antd";
+import styled from "styled-components";
+import { FormComponentProps } from "antd/lib/form";
+import Severity from "../../types/enums/Severity";
+import { StyledTable } from "../shared/Styled";
+import Header from "../shared/Header";
+import FinalValidationStatus from "../../types/validation/FinalValidationStatus";
 
-const LogicalTransformations = (props) => {
-  const {
-    index,
-    item,
-    handleChange,
-    handleChangeSelect,
-    getDisabled,
-    uniqueID,
-    transformations,
-    editing,
-    logicalIndex,
-    logicalEnumOptions,
-    logicalBoolean,
-    logicalTransformBoolean,
-    fileColumnProperties,
-    checkTargets,
-    mappedTargets,
-    validations,
-    remove,
-    getBlankCheck,
-    isRestrict,
-  } = props;
+const WarningHeader = styled.h1`
+  margin-top: 10px;
+`;
 
-  const shouldRenderConditions =
-    transformations[uniqueID] &&
-    transformations[uniqueID].logicalTransformation.length > 1;
+interface FinalValidateContainerProps extends FormComponentProps {
+  data: FinalValidationStatus[],
+  mapName: string,
+}
+const FinalValidateContainer: React.FC<FinalValidateContainerProps> = (props: FinalValidateContainerProps) => {
+  const { data, mapName } = props;
+  const errorColumns = [
+    {
+      title: "Attribute",
+      dataIndex: "type",
+      key: "type",
+      width: 150,
+    },
+    {
+      title: "Status",
+      dataIndex: "severity",
+      key: "severity",
+      width: 100,
+      render: (text: string) => {
+        switch (text) {
+          case (Severity.SUCCESS):
+            return <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" style={{ fontSize: "24px" }} />;
+          case (Severity.WARNING):
+            return <Icon type="warning" theme="twoTone" twoToneColor="#f7ba11" style={{ fontSize: "24px" }} />;
+          case (Severity.ERROR):
+            return <Icon type="close-circle" theme="twoTone" twoToneColor="#ff030b" style={{ fontSize: "24px" }} />;
+          default:
+            return <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" style={{ fontSize: "24px" }} />;
+        }
+      },
+    },
+    {
+      title: "Message",
+      dataIndex: "message",
+      key: "message",
+    },
+  ];
+  const warningColumns = [
+    {
+      title: "Attribute",
+      dataIndex: "type",
+      key: "type",
+    },
+    {
+      title: "Message",
+      dataIndex: "message",
+      key: "message",
+    },
+  ];
+
+  const footer = (type: Severity) => {
+    let color;
+    let icon;
+    let count;
+    switch (type) {
+      case (Severity.ERROR):
+        icon = "close-circle";
+        color = "#ff030b";
+        count = data.filter((validation) => validation.severity === Severity.ERROR).length;
+        break;
+      case (Severity.WARNING):
+        icon = "warning";
+        color = "#f59b42";
+        count = data.filter((validation) => validation.severity === Severity.WARNING).length;
+        break;
+      default:
+        break;
+    }
+    return (
+      <>
+        {`${count} `}
+        <Icon type={icon} theme="twoTone" twoToneColor={color} />
+        {` ${type}(s)`}
+      </>
+    );
+  };
+
+  const errors = data.filter((validationResult: FinalValidationStatus) => validationResult.severity === Severity.ERROR);
+  const warnings = data.filter((validationResult: FinalValidationStatus) => validationResult.severity === Severity.WARNING);
 
   return (
-    <div>
-      <Col>
-        <Select
-          allowClear
-          showSearch
-          dropdownMatchSelectWidth={false}
-          style={{ width: 120 }}
-          placeholder="AND/OR"
-          optionFilterProp="children"
-          name={`logicalRelation`}
-          onChange={(event) => handleChangeSelect(event, 0, uniqueID, "logicalRelation")}
-          value={transformations[uniqueID] && transformations[uniqueID].logicalRelation}
-          disabled={!editing}
-        >
-          <Option value="AND">AND</Option>
-          <Option value="OR">OR</Option>
-        </Select>
-
-        {validations &&
-          validations[uniqueID] &&
-          validations[uniqueID].logicalRelation ? (
-          <p style={{ color: "red", marginLeft: 15 }}>
-            {validations[uniqueID].logicalRelation}
-          </p>
-        ) : null}
-      </Col>
-
-      {shouldRenderConditions && (
-        <>
-          <Icon
-            style={{ marginLeft: 5, marginTop: 10 }}
-            className="dynamic-delete-button"
-            type="question-circle-o"
-            title="AND evaluates all conditions must be true for the overall condition to be true. OR evaluates that one of the conditions must be true for the overall condition to be true."
-          />
-          {/* Render other elements here when conditions are met */}
-        </>
+    <>
+      <Header header="Final Validation Results" fontSize="16px" />
+      {errors.length === 0 && warnings.length === 0 && (
+      <Result
+        status="success"
+        title={`Successfully Validated "${mapName}"!`}
+        subTitle={"Because your map passed validation, its status has been updated"
+        + "from Building to Validated. It is now eligible to be Activated."}
+      />
       )}
-
-      {shouldRenderConditions && (
-        <>
-          <Row style={{ marginBottom: 10 }}>
-            <Col span={8}>
-              <span>IF</span>
-
-              <Select
-                showSearch
-                allowClear
-                style={{ width: 180 }}
-                optionFilterProp="children"
-                disabled={
-                  getDisabled(item.comparisonFileColumnTargetValueID, item.blank, hardcoded, "targetValue") || !editing
-                }
-                name={`LogicalTransformation.[${index}].comparisonFileColumnTargetValueID`}
-                onChange={(event) => {
-                  handleChangeSelect(event, index, uniqueID, "targetValue");
-                }}
-                value={item.comparisonFileColumnTargetValueID ? item.comparisonFileColumnTargetValueID : fileColumnProperties.logicalTransformation && fileColumnProperties.logicalTransformation[index].comparisonFileColumnTargetValueID}
-              >
-                {checkTargets(mappedTargets).map((target, i) => (
-                  <Option value={target.comparisonFileColumnTargetValueID} key={i}>
-                    {/* {target.name}*/}
-                    {target.columnName + "-" + target.name}
-                  </Option>
-                ))}
-              </Select>
-              {validations &&
-                validations[uniqueID] &&
-                validations[uniqueID].logicalTransformation &&
-                validations[uniqueID].logicalTransformation[index] &&
-                validations[uniqueID].logicalTransformation[index].comparisonFileColumnTargetValueID ? (
-                <p style={{ color: "red", marginLeft: 15 }}>
-                  {validations[uniqueID].logicalTransformation[index].comparisonFileColumnTargetValueID}
-                </p>
-              ) : null}
-            </Col>
-            {/* Render other elements here when conditions are met */}
-          </Row>
-        </>
+      {(errors.length > 0) && (
+      <>
+        {`There were ${errors.length} `}
+        <Icon type="close-circle" theme="twoTone" twoToneColor="#ff030b" />
+        {` error(s) detected on map ${mapName}. After reviewing, please go to your file 
+          and verify the data is as you expect in the highlighted rows and revalidate your map.`}
+        <StyledTable columns={errorColumns} dataSource={errors} footer={() => footer(Severity.ERROR)} />
+      </>
       )}
-    </div>
+      {(warnings.length > 0) && (
+      <>
+        <WarningHeader>Warnings</WarningHeader>
+        <StyledTable columns={warningColumns} dataSource={warnings} footer={() => footer(Severity.WARNING)} />
+      </>
+      )}
+    </>
   );
 };
 
-export default LogicalTransformations;
+
+
+
+export default FinalValidateContainer;
